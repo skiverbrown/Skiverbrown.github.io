@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crapless Craps Payout Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
+    h2 { color: #333; }
+    label, select, input, button { font-size: 16px; margin: 10px 0; display: block; }
+    .result { margin-top: 20px; font-weight: bold; font-size: 18px; color: #006400; }
+    .box { background: #fff; padding: 20px; border: 1px solid #ccc; max-width: 400px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Crapless Craps Payout Calculator</h2>
+
+    <label for="point">Select the Point:</label>
+    <select id="point">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+
+    <label for="bet">Enter Odds Bet Amount ($):</label>
+    <input type="number" id="bet" value="400" min="1" />
+
+    <button onclick="calculatePayout()">Calculate Payout</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculatePayout() {
+      const point = parseInt(document.getElementById("point").value);
+      const bet = parseFloat(document.getElementById("bet").value);
+      let odds = 0;
+
+      if ([2, 12].includes(point)) odds = 6;
+      else if ([3, 11].includes(point)) odds = 3;
+      else if ([4, 10].includes(point)) odds = 2;
+      else if ([5, 9].includes(point)) odds = 1.5;
+      else if ([6, 8].includes(point)) odds = 1.2;
+
+      const oddsWin = bet * odds;
+      const passLineWin = bet;
+      const totalReturn = bet + oddsWin + passLineWin;
+
+      document.getElementById("result").innerText =
+        `You win $${oddsWin.toFixed(2)} on odds and $${passLineWin.toFixed(2)} on the line.\nTotal payout: $${totalReturn.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
