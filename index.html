@@ -1,6 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crapless Craps Payout Calculator</title>
+  <style>
+    body { font-family: sans-serif; background: #202020; color: #f4f4f4; padding: 2rem; }
+    h1 { color: #00ffd0; text-align: center; }
+    .container { max-width: 800px; margin: auto; }
+    label, select, input { margin: 0.5rem 0; display: block; width: 100%; }
+    .result { margin-top: 1.5rem; font-size: 1.25rem; background: #333; padding: 1rem; border-radius: 8px; }
+    button { padding: 0.5rem 1rem; font-weight: bold; background: #00ffd0; color: #000; border: none; cursor: pointer; border-radius: 6px; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crapless Craps Payout Calculator</h1>
+    
+    <label for="betType">Bet Type:</label>
+    <select id="betType">
+      <option value="field">Field</option>
+      <option value="layOdds">Lay Odds</option>
+      <option value="placeBet">Place Bet</option>
+      <option value="hardway">Hardway</option>
+    </select>
+
+    <label for="amount">Amount Bet ($):</label>
+    <input type="number" id="amount" placeholder="Enter bet amount" />
+
+    <label for="roll">Dice Roll (2–12):</label>
+    <input type="number" id="roll" min="2" max="12" />
+
+    <button onclick="calculatePayout()">Calculate Payout</button>
+
+    <div class="result" id="result">Payout will appear here.</div>
+  </div>
+
+  <script>
+    function calculatePayout() {
+      const type = document.getElementById('betType').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const roll = parseInt(document.getElementById('roll').value);
+      let payout = 0;
+
+      if (isNaN(amount) || isNaN(roll)) {
+        document.getElementById('result').innerText = "Please enter valid numbers.";
+        return;
+      }
+
+      switch (type) {
+        case 'field':
+          if ([2, 3, 4, 9, 10, 11, 12].includes(roll)) {
+            payout = roll === 2 || roll === 12 ? amount * 2 : amount;
+          }
+          break;
+
+        case 'layOdds':
+          if ([4, 10].includes(roll)) payout = amount / 2;
+          else if ([5, 9].includes(roll)) payout = amount * 2 / 3;
+          else if ([6, 8].includes(roll)) payout = amount * 5 / 6;
+          break;
+
+        case 'placeBet':
+          if ([4, 10].includes(roll)) payout = amount * 9 / 5;
+          else if ([5, 9].includes(roll)) payout = amount * 7 / 5;
+          else if ([6, 8].includes(roll)) payout = amount * 7 / 6;
+          break;
+
+        case 'hardway':
+          if (roll === 4 || roll === 10) payout = amount * 7;
+          else if (roll === 6 || roll === 8) payout = amount * 9;
+          break;
+      }
+
+      document.getElementById('result').innerText = payout > 0 
+        ? `You win $${payout.toFixed(2)}`
+        : "No payout on this roll.";
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <title>Crapless Craps Payout Calculator</title>
   <style>
